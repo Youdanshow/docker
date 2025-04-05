@@ -1,0 +1,13 @@
+services:
+  vaultwarden:
+    image: vaultwarden/server:latest
+    container_name: vaultwarden
+    restart: always
+    ports:
+      - "80:80"
+      - "3012:3012"
+    volumes:
+      - /apps/vaultwarden/bw-data:/data
+      - /etc/localtime:/etc/localtime:ro
+    env_file:
+      - docker.env
