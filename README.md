@@ -1,12 +1,15 @@
 # Docker
 
-Requirement
+# Requirement
 
+```bash
 apt update && apt upgrade
 apt install docker-compose-v2 
+```
 
-docker commands
+# docker commands
 
+```bash
 # démarrer le conteneur
 docker compose up -d
 
@@ -18,15 +21,19 @@ docker compose down
 
 # afficher les logs des conteneurs
 docker logs <conteneur_name>
+```
 
-Vaultwarden installation
+# Vaultwarden installation
 
-Requirement
+## Requirement
 
+```bash
 apt update && apt upgrade
+```
 
-docker-compose.yml
+### docker-compose.yml
 
+```yaml
 services:
   vaultwarden:
     image: vaultwarden/server:latest
@@ -40,26 +47,30 @@ services:
       - /etc/localtime:/etc/localtime:ro
     env_file:
       - docker.env
+```
 
-docker.env
+### docker.env
 
-openssl rand -hex 32
+`openssl rand -hex 32`
 
+```none
 ADMIN_TOKEN=
 WEBSOCKET_ENABLED=true
 SIGNUPS_ALLOWED=true
 TZ=Europe/Paris
+```
 
-WEB UI
+## WEB UI
 
-Interface utilisateur : http://localhost:80
+Interface utilisateur : `http://localhost:80`
 
-Interface admin : http://localhost/admin
+Interface admin : `http://localhost/admin`
 
-Nginx Proxy Manager
+# Nginx Proxy Manager
 
-docker-compose.yml
+### docker-compose.yml
 
+```yaml
 services:
   nginx-proxy-manager:
     image: 'jc21/nginx-proxy-manager:latest'
@@ -89,19 +100,20 @@ services:
       MYSQL_PASSWORD: 'npm_password'
     volumes:
       - ./data/mysql:/var/lib/mysql
+```
 
-URL : http://localhost:81
+URL : `http://localhost:81`
 
 Login par défaut :
 
-Email : admin@example.com
+* Email : `admin@example.com`
+* Mot de passe : `changeme`
 
-Mot de passe : changeme
+# Jenkins
 
-Jenkins
+### docker-compose.yml
 
-docker-compose.yml
-
+```yaml
 services:
   jenkins:
     image: jenkins/jenkins:lts
@@ -116,13 +128,15 @@ services:
       - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
 volumes:
   jenkins_home:
+```
 
-Jenkins sera disponible sur http://localhost:8080.
+Jenkins sera disponible sur `http://localhost:8080`.
 
-Portainer
+# Portainer
 
-docker-compose.yml
+### docker-compose.yml
 
+```yaml
 services:
   portainer:
     image: portainer/portainer-ce:latest
@@ -136,22 +150,26 @@ services:
       - portainer_data:/data                          # Données de Portainer
 volumes:
   portainer_data:
+```
 
-Accède à l'interface : http://localhost:9000
+Accède à l'interface : `http://localhost:9000`
 
-Le port 8000 dans Portainer est utilisé pour la connexion d’agents distants via le Portainer Agent, notamment dans les architectures multi-hôtes (gestion de plusieurs machines Docker à partir d’un seul Portainer).
+Le port 8000 dans Portainer est utilisé pour la connexion d'agents distants via le Portainer Agent, notamment dans les architectures multi-hôtes (gestion de plusieurs machines Docker à partir d'un seul Portainer).
 
-Prometheus x Grafana
+# Prometheus x Grafana
 
-Structure du répertoire
+### Structure du répertoire
 
+```none
 prometheus-grafana/
 ├── docker-compose.yml
 ├── prometheus/
 │   └── prometheus.yml
+```
 
-docker-compose.yml
+### docker-compose.yml
 
+```yaml
 services:
   prometheus:
     image: prom/prometheus:latest
@@ -173,9 +191,11 @@ services:
 
 volumes:
   grafana-storage:
+```
 
-prometheus.yml
+### prometheus.yml
 
+```yaml
 global:
   scrape_interval: 15s
 
@@ -183,17 +203,18 @@ scrape_configs:
   - job_name: 'prometheus'
     static_configs:
       - targets: ['prometheus:9090']
+```
 
 Accès : 
 
-Prometheus : http://localhost:9090
+* Prometheus : `http://localhost:9090`
+* Grafana : `http://localhost:3000`
 
-Grafana : http://localhost:3000
+# Gitea
 
-Gitea
+### docker-compose.yml
 
-docker-compose.yml
-
+```yaml
 networks:
   gitea:
     external: false
@@ -234,5 +255,6 @@ services:
       - gitea
     volumes:
       - ./postgres:/var/lib/postgresql/data
+```
 
-Gitea : http://localhost:3000
+Gitea : `http://localhost:3000`
